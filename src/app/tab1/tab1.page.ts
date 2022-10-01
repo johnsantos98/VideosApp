@@ -2,6 +2,8 @@ import { IFilme } from './models/iFilme.model';
 import { Component } from '@angular/core';
 import { AlertController } from '@ionic/angular';
 import { ToastController } from '@ionic/angular';
+import { DadosService } from '../services/dados.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-tab1',
@@ -18,7 +20,8 @@ listaVideos: IFilme[] = [
   duracao: '2h 9m',
   classificacao: 76,
   cartaz: 'https://www.themoviedb.org/t/p/w600_and_h900_bestv2/u9QD9ddSVeYJABMSqBwfqe0NmsJ.jpg',
-  generos: ['Ação', 'Thriller', 'Crime']
+  generos: ['Ação', 'Thriller', 'Crime'],
+  pagina: '/redencao'
 },
 {
   nome:'Doutor Estranho no Multiverso da Loucura (2022)',
@@ -26,11 +29,24 @@ listaVideos: IFilme[] = [
   duracao:'2h 6m',
   classificacao: 0,
   cartaz:'https://www.themoviedb.org/t/p/w600_and_h900_bestv2/boIgXXUhw5O3oVkhXsE6SJZkmYo.jpg',
-  generos:['Fantasia', 'Ação', 'Aventura']
+  generos:['Fantasia', 'Ação', 'Aventura'],
+  pagina: '/doutor-estranho'
 }
 ];
 
-  constructor(public alertController: AlertController,public toastController: ToastController) {}
+  constructor(
+    public alertController: AlertController,
+    public toastController: ToastController,
+    public dadosService: DadosService,
+    public route: Router) { }
+
+
+    exibirFilme(filme: IFilme){
+      this.dadosService.guardarDados('filme',filme);
+      this.route.navigateByUrl('/dados-filme');
+    }
+
+
 
   async exibirAlertaFavorito() {
     const alert = await this.alertController.create({
